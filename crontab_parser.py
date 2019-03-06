@@ -26,6 +26,10 @@ def parse(crontab, valid_range):
 
 def check_crontab(crontab, valid_range):
     err_field = ['min', 'hour', 'day_of_month', 'month', 'day_of_week']
+
+    # Avoiding impossible dates as 31th June
+    valid_range[2] = (1, 31) if crontab[3] in ['4', '6', '9', '11'] else (1, 29) if crontab[3] == '2' else (1, 32)
+
     current_field = 0
     for field, valid_values in zip(crontab, valid_range):
         if isinstance(field, list):
